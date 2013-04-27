@@ -10,7 +10,7 @@
 
 @interface ViewController : UIViewController{
     IBOutlet UILabel *timeDisplay;
- //   IBOutlet UILabel *startStop;
+    IBOutlet UILabel *startStop;
     IBOutlet UITableView *logView;
     NSMutableArray *log;
     NSTimer *timer;

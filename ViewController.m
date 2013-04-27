@@ -10,32 +10,39 @@
 
 @implementation ViewController
 
+static NSString * const TIME_ST_START = @"time state start";
+static NSString * const TIME_ST_STOP  = @"time state stop";
+static NSString * const TIME_ST_INIT  = @"time state init";
+
 NSDate *stdate;
-BOOL timeflg=FALSE;
+NSString *timeflg;
 
 - (void)onTimer:(NSTimer*)timer {
-    if(timeflg){
+    if(timeflg == TIME_ST_START){
         NSDate *now = [NSDate date];
-        self->timeDisplay.text = [NSString stringWithFormat:@"%.3f",
+        self->timeDisplay.text = [NSString stringWithFormat:@"%.2f",
                          [now timeIntervalSinceDate:stdate]];
     }
 }
 
 - (IBAction)pushStartStop:(id)sender
 {
-    if (timeflg == FALSE) {  // push Start
-        timeflg = TRUE;
+    if (timeflg != TIME_ST_START) {  // push Start
+        timeflg = TIME_ST_START;
         stdate = [NSDate date];
+        self->startStop.text = @"stop";
     }
     else {  // push Stop
-        timeflg = FALSE;
+        timeflg = TIME_ST_STOP;
+        self->startStop.text = @"start";
     }
 }
 
 - (IBAction)pushReset:(id)sender
 {
-    timeflg = FALSE;
+    timeflg = TIME_ST_INIT;
     self->timeDisplay.text = @"0.00";
+    self->startStop.text = @"start";
 }
 
 
@@ -47,8 +54,9 @@ BOOL timeflg=FALSE;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    timeflg = FALSE;
+    timeflg = TIME_ST_INIT;
     self->timeDisplay.text = @"0.00";
+    self->startStop.text = @"start";
     timer = [NSTimer scheduledTimerWithTimeInterval:(0.01)
                     target:self selector:@selector(onTimer:)
                     userInfo:nil repeats:YES];
